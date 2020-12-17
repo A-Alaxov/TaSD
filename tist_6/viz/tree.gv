@@ -1,0 +1,18 @@
+digraph tree {
+As -> you
+you -> can
+can -> I
+can -> see
+I -> am
+am -> anything
+anything
+see -> friendly
+see -> very
+friendly -> forcing
+friendly -> not
+forcing -> do
+do
+not
+very -> to
+to
+}
