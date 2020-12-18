@@ -18,6 +18,7 @@ struct tmp_str
     char str[STR_MAX];
 };
 
+struct tmp_str *fread_in_array(char *file_name, size_t elems);
 int all_stat();
 
 #endif //STATISTIC_H

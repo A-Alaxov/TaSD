@@ -8,24 +8,51 @@ int gen_file(char *file_name, size_t elems, int file_type)
     if (!f)
         return OPEN_ER;
 
+    char elem[STR_MAX] = "";
     for (size_t i = 0; i < elems; i++)
     {
-        long elem;
-        if (file_type == 1)
-            elem = i;
-        else
+        int len;
+        len = rand() % 2 + 1;
+        for (int j = 0; j < len; j++)
         {
-            elem = rand() % (elems * 10000);
-            int sign = rand() % 2;
-            if (sign)
-                elem *= -1;
+            elem[j] = rand() % ('~' - '!' + 1) + '!';
         }
-        char str[STR_MAX];
-        fwrite_elem(f, itoa(elem, str, 10));
+        elem[len] = '\0';
+
+        fwrite_elem(f, elem);
         fprintf(f, "\n");
     }
 
     fclose(f);
+
+    if (file_type == 1)
+    {
+        struct tmp_str *a = fread_in_array(file_name, elems);
+        if (!a)
+            return EXIT_FAILURE;
+
+        f = fopen(file_name, "w");
+        if (!f)
+            return OPEN_ER;
+
+        char temp[STR_MAX];
+        for (size_t i = 0; i < elems - 1; i++)
+            for (size_t j = 0; j < elems - i - 1; j++)
+                if (strcmp(a[j].str, a[j + 1].str) > 0)
+                {
+                    strcpy(temp, a[j].str);
+                    strcpy(a[j].str, a[j + 1].str);
+                    strcpy(a[j + 1].str, temp);
+                }
+
+        for (size_t i = 0; i < elems; i++)
+        {
+            fwrite_elem(f, a[i].str);
+            fprintf(f, "\n");
+        }
+
+        fclose(f);
+    }
 
     return EXIT_SUCCESS;
 }
@@ -60,7 +87,7 @@ int file_stat(char *file_name, size_t *memory, size_t elems,
     size_t cmp;
     int find;
     clock_t search = clock();
-    for (size_t i = 0; i < ITERATIONS; i++)
+    for (size_t i = 0; i < ITERATIONS / 100; i++)
     {
         for (size_t i = 0; i < elems; i++)
         {
@@ -68,7 +95,7 @@ int file_stat(char *file_name, size_t *memory, size_t elems,
         }
     }
     search = clock() - search;
-    *time_search = ((double) search / CLOCKS_PER_SEC) / (ITERATIONS);
+    *time_search = ((double) search / CLOCKS_PER_SEC) / (ITERATIONS / 100);
 
     // avg_cmp
     double cmp_sum = 0;
@@ -204,15 +231,17 @@ int hash_table_stat(char *file_name, double max_cmp, size_t *memory, size_t elem
     // search
     size_t cmp;
     int find;
-    clock_t search = clock();
+    clock_t t_s;
+    clock_t search = 0;
     for (size_t i = 0; i < ITERATIONS; i++)
     {
+        t_s = clock();
         for (size_t i = 0; i < elems; i++)
         {
             search_in_table(perfect_table, a[i].str, &cmp, &find);
         }
+        search += clock() - t_s;
     }
-    search = clock() - search;
     *time_search = ((double) search / CLOCKS_PER_SEC) / (ITERATIONS);
 
     // avg_cmp

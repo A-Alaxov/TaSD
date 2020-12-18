@@ -5,7 +5,8 @@
 #include "hash_table.h"
 #include "statistic.h"
 
-#define VIZ_TREE "viz/tree.gv"
+#define VIZ_BIN_TREE "viz/binary_tree.gv"
+#define VIZ_BAL_TREE "viz/balance_tree.gv"
 
 int main()
 {
@@ -97,8 +98,8 @@ int main()
                 }
                 else if (input_in == 5)
                 {
-                    export_to_dot(root, VIZ_TREE, "tree");
-                    system("dot -Tpng viz/tree.gv -o viz/tree.png && sdraw viz/tree.png");
+                    export_to_dot(root, VIZ_BIN_TREE, "binary_tree");
+                    system("dot -Tpng viz/binary_tree.gv -o viz/binary_tree.png && mspaint viz\\binary_tree.png");
                 }
                 else
                 {
@@ -178,8 +179,8 @@ int main()
                 }
                 else if (input_in == 5)
                 {
-                    bexport_to_dot(balance_node, VIZ_TREE, "tree");
-                    system("dot -Tpng viz/tree.gv -o viz/tree.png && sdraw viz/tree.png");
+                    bexport_to_dot(balance_node, VIZ_BAL_TREE, "balance_tree");
+                    system("dot -Tpng viz/balance_tree.gv -o ./viz/balance_tree.png && mspaint viz\\balance_tree.png");
                 }
                 else
                 {

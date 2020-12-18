@@ -1,4 +1,4 @@
-digraph tree {
+digraph balance_tree {
 at -> Imperials
 at -> smiling
 Imperials -> Can

@@ -1,0 +1,19 @@
+digraph binary_tree {
+My -> Imperials
+My -> ancestors
+Imperials -> Can
+Can -> 01
+01
+ancestors -> a
+ancestors -> are
+a
+are -> smiling
+smiling -> at
+smiling -> you
+at -> me
+me -> say
+say -> same
+same
+you -> the
+the
+}
